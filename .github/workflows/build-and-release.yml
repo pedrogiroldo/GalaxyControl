@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: galaxycontrol-linux
-          path: release/*/GalaxyControl-Linux-*.AppImage
+          path: release/
           retention-days: 30
 
   release:
@@ -85,7 +85,7 @@ jobs:
             ---
             *This release was automatically generated from the latest main branch.*
           files: |
-            artifacts/galaxycontrol-linux/*
+            artifacts/galaxycontrol-linux/release/0.1.0/GalaxyControl-Linux-0.1.0.AppImage
           draft: false
           prerelease: false
           generate_release_notes: true
