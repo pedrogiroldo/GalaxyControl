@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Always write code in english, the interface of then program also is all in english.
+
+The projects is called GalaxyControl and here is its description: GUI to manage the specifc settings of Samsung Galaxy Book's driver for linux.
