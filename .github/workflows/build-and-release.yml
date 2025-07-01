@@ -25,11 +25,18 @@ jobs:
       - name: Build application
         run: bun run build
 
+      - name: Find latest version directory
+        id: version
+        run: |
+          LATEST_VERSION=$(ls -1 release/ | sort -V | tail -1)
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          echo "Latest version: $LATEST_VERSION"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: galaxycontrol-linux
-          path: release/
+          path: release/${{ steps.version.outputs.version }}/
           retention-days: 30
 
   release:
@@ -85,7 +92,7 @@ jobs:
             ---
             *This release was automatically generated from the latest main branch.*
           files: |
-            artifacts/galaxycontrol-linux/*/GalaxyControl-Linux*.AppImage
+            artifacts/galaxycontrol-linux/GalaxyControl-Linux*.AppImage
           draft: false
           prerelease: false
           generate_release_notes: true
