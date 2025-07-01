@@ -1,15 +1,10 @@
 import * as sudoPrompt from "sudo-prompt";
 
 export default abstract class SysfsManager {
-  protected sysfsPath: string;
 
-  constructor(sysfsPath: string) {
-    this.sysfsPath = sysfsPath;
-  }
-
-  public async getValue(): Promise<string> {
+  public async getValue(sysfsPath: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const command = `cat "${this.sysfsPath}"`;
+      const command = `cat "${sysfsPath}"`;
       sudoPrompt.exec(
         command,
         { name: "GalaxyControl" },
@@ -26,9 +21,9 @@ export default abstract class SysfsManager {
     });
   }
 
-  public async setValue(value: string): Promise<void> {
+  public async setValue(sysfsPath: string, value: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      const command = `echo "${value}" > "${this.sysfsPath}"`;
+      const command = `echo "${value}" > "${sysfsPath}"`;
       sudoPrompt.exec(
         command,
         { name: "GalaxyControl" },
