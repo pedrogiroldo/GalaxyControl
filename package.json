@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "author": "Pedro Andrade Giroldo",
+  "description": "GUI to manage the specific settings of Samsung Galaxy Book's driver for linux",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
