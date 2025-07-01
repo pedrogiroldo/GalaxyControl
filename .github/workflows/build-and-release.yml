@@ -57,7 +57,7 @@ jobs:
           echo "tag=v$(date +'%Y%m%d')-${{ github.run_number }}" >> $GITHUB_OUTPUT
 
       - name: Create Release
-        uses: softprops/action-gh-release@1
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
           name: GalaxyControl ${{ steps.tag.outputs.tag }}
