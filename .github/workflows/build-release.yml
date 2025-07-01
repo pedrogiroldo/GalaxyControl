@@ -30,6 +30,10 @@ jobs:
 
       - name: Build application
         run: bun run build
+        env:
+          GH_TOKEN: ""
+          GITHUB_TOKEN: ""
+          ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES: true
 
       - name: List build artifacts
         run: |
@@ -62,6 +66,18 @@ jobs:
           find release/ -type f -name "*.AppImage" || echo "No AppImage found"
           echo "Complete structure:"
           find release/ -type f
+
+      - name: Check if AppImage exists
+        run: |
+          if [ -f "release/${{ github.event.inputs.version }}/GalaxyControl-Linux-${{ github.event.inputs.version }}.AppImage" ]; then
+            echo "✅ AppImage found successfully"
+            ls -la "release/${{ github.event.inputs.version }}/GalaxyControl-Linux-${{ github.event.inputs.version }}.AppImage"
+          else
+            echo "❌ AppImage not found at expected location"
+            echo "Looking for files in release directory:"
+            find release/ -name "*.AppImage" -type f
+            exit 1
+          fi
 
       - name: Create Release
         id: create_release
@@ -104,3 +120,4 @@ jobs:
           asset_path: ./release/${{ github.event.inputs.version }}/GalaxyControl-Linux-${{ github.event.inputs.version }}.AppImage
           asset_name: GalaxyControl-Linux-${{ github.event.inputs.version }}.AppImage
           asset_content_type: application/octet-stream
+        continue-on-error: true
