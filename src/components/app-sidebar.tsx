@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Battery } from "lucide-react";
+import { Battery, Zap } from "lucide-react";
 
 interface AppSidebarProps {
   activeSection: string;
@@ -27,6 +27,12 @@ export function AppSidebar({
       label: "Battery threshold",
       icon: Battery,
       description: "Battery threshold settings",
+    },
+    {
+      id: "performance",
+      label: "Performance mode",
+      icon: Zap,
+      description: "Performance mode settings",
     },
   ];
 
