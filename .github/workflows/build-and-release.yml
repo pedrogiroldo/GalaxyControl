@@ -85,7 +85,7 @@ jobs:
             ---
             *This release was automatically generated from the latest main branch.*
           files: |
-            artifacts/galaxycontrol-linux/release/0.1.0/GalaxyControl-Linux-0.1.0.AppImage
+            artifacts/galaxycontrol-linux/*/GalaxyControl-Linux*.AppImage
           draft: false
           prerelease: false
           generate_release_notes: true
