@@ -32,7 +32,7 @@ export default abstract class SysfsManager {
       sudoPrompt.exec(
         command,
         { name: "GalaxyControl" },
-        (error, stdout, stderr) => {
+        (error, _stdout, stderr) => {
           if (error) {
             reject(error);
           } else if (stderr) {
