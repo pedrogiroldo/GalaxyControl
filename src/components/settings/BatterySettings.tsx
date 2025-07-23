@@ -42,10 +42,10 @@ export function BatterySettings() {
 
   useEffect(() => {
     if (!hasLoadedRef.current) {
-      hasLoadedRef.current = true;
       loadThreshold();
+      hasLoadedRef.current = true;
     }
-  }, []);
+  }, [threshold]);
 
   const loadThreshold = async () => {
     try {
@@ -75,10 +75,7 @@ export function BatterySettings() {
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      await window.ipcRenderer.invoke(
-        "batteryThresholdManager:setThreshold",
-        threshold[0],
-      );
+      await invoke("set_threshold", { value: threshold[0] });
       console.log("Battery threshold saved successfully!");
     } catch (error) {
       console.error("Error saving battery threshold:", error);

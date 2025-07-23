@@ -9,12 +9,12 @@ pub struct SystemManager;
 impl SystemManager {
     /// Inicializa o sistema global - deve ser chamado uma vez ao abrir o app
     /// Esta função vai pedir a senha do sudo
-    pub async fn initialize() -> Result<(), Box<dyn std::error::Error>> {
+    pub async fn initialize(password: &str) -> Result<(), Box<dyn std::error::Error>> {
         let sysfs_manager = SysfsManager::new();
 
         // Valida o sudo uma única vez na inicialização
         println!("Initializing system permissions...");
-        sysfs_manager.validate_sudo().await?;
+        sysfs_manager.validate_sudo(password).await?;
         println!("System permissions validated successfully!");
 
         // Armazena na instância global
@@ -70,3 +70,11 @@ impl SystemManager {
 //         assert!(result.is_err());
 //     }
 // }
+
+#[tauri::command]
+pub async fn authenticate(password: &str) -> Result<(), String> {
+    match SystemManager::initialize(password).await {
+        Ok(_) => Ok(()),
+        Err(e) => Err(format!("Failed to initialize SystemManager: {:?}", e)),
+    }
+}

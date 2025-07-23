@@ -16,35 +16,73 @@ impl SysfsManager {
 
     /// Valida o sudo uma vez, pedindo a senha do usuário
     /// Deve ser chamado antes de usar get_value ou set_value
-    pub async fn validate_sudo(&self) -> Result<(), Box<dyn std::error::Error>> {
+    /// Valida o sudo uma vez, pedindo a senha do usuário
+    /// Deve ser chamado antes de usar get_value ou set_value
+    pub async fn validate_sudo(&self, password: &str) -> Result<(), Box<dyn std::error::Error>> {
         let mut validated = self.sudo_validated.lock().await;
+
+        use tokio::io::AsyncWriteExt;
 
         if *validated {
             // Renova o timestamp do sudo
-            let output = Command::new("sudo")
+            let mut child = Command::new("sudo")
+                .arg("-S") // Read password from stdin
+                .arg("-p") // Custom prompt (empty to suppress)
+                .arg("")
                 .arg("-v")
+                .stdin(Stdio::piped())
                 .stdout(Stdio::piped())
                 .stderr(Stdio::piped())
-                .output()
-                .await?;
+                .spawn()?;
+
+            if let Some(mut stdin) = child.stdin.take() {
+                stdin
+                    .write_all(format!("{}\n", password).as_bytes())
+                    .await?;
+                stdin.flush().await?;
+                drop(stdin); // Close stdin to signal end of input
+            }
+
+            let output = child.wait_with_output().await?;
 
             if !output.status.success() {
                 *validated = false;
                 let stderr = String::from_utf8_lossy(&output.stderr);
-                return Err(format!("Failed to refresh sudo: {}", stderr).into());
+                return Err(format!(
+                    "Failed to refresh sudo (possibly incorrect password): {}",
+                    stderr
+                )
+                .into());
             }
         } else {
             // Primeira validação - vai pedir senha
-            let output = Command::new("sudo")
+            let mut child = Command::new("sudo")
+                .arg("-S") // Read password from stdin
+                .arg("-p") // Custom prompt (empty to suppress)
+                .arg("")
                 .arg("-v")
+                .stdin(Stdio::piped())
                 .stdout(Stdio::piped())
                 .stderr(Stdio::piped())
-                .output()
-                .await?;
+                .spawn()?;
+
+            if let Some(mut stdin) = child.stdin.take() {
+                stdin
+                    .write_all(format!("{}\n", password).as_bytes())
+                    .await?;
+                stdin.flush().await?;
+                drop(stdin); // Close stdin to signal end of input
+            }
+
+            let output = child.wait_with_output().await?;
 
             if !output.status.success() {
                 let stderr = String::from_utf8_lossy(&output.stderr);
-                return Err(format!("Sudo validation failed: {}", stderr).into());
+                return Err(format!(
+                    "Sudo validation failed (possibly incorrect password): {}",
+                    stderr
+                )
+                .into());
             }
 
             *validated = true;
@@ -148,16 +186,16 @@ impl SysfsManager {
         Ok(())
     }
 
-    /// Método conveniente para executar múltiplas operações sem validar sudo a cada vez
-    pub async fn with_sudo<F, T>(&self, operations: F) -> Result<T, Box<dyn std::error::Error>>
-    where
-        F: FnOnce(&Self) -> tokio::task::JoinHandle<Result<T, Box<dyn std::error::Error>>>,
-        T: Send + 'static,
-    {
-        self.validate_sudo().await?;
-        let handle = operations(self);
-        handle.await?
-    }
+    // Método conveniente para executar múltiplas operações sem validar sudo a cada vez
+    // pub async fn with_sudo<F, T>(&self, operations: F) -> Result<T, Box<dyn std::error::Error>>
+    // where
+    //     F: FnOnce(&Self) -> tokio::task::JoinHandle<Result<T, Box<dyn std::error::Error>>>,
+    //     T: Send + 'static,
+    // {
+    //     self.validate_sudo().await?;
+    //     let handle = operations(self);
+    //     handle.await?
+    // }
 }
 
 impl Default for SysfsManager {

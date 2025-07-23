@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { invoke } from "@tauri-apps/api/core";
 import { Zap, Save } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
@@ -48,9 +49,13 @@ export function PerformanceSettings() {
   const loadPerformanceData = async () => {
     try {
       setIsLoading(true);
-      const data = await window.ipcRenderer.invoke(
-        "performanceModeManager:getPerformanceData"
-      );
+      const data = (await invoke("get_performance_data")) as {
+        currentMode: string;
+        possibleModes: string[];
+      };
+      if (!data || !data.currentMode || !data.possibleModes) {
+        throw new Error("Invalid performance data received");
+      }
       console.log("Performance data:", data);
       setCurrentMode(data.currentMode);
       setAvailableModes(data.possibleModes);
@@ -68,10 +73,9 @@ export function PerformanceSettings() {
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      await window.ipcRenderer.invoke(
-        "performanceModeManager:setPerformanceMode",
-        currentMode
-      );
+      await invoke("set_performance_mode", {
+        mode: currentMode,
+      });
       console.log("Performance mode saved successfully!");
     } catch (error) {
       console.error("Error saving performance mode:", error);
