@@ -158,6 +158,33 @@ impl SysfsManager {
         Ok(stdout.trim().to_string())
     }
 
+    pub async fn ls_directory(
+        &self,
+        sysfs_path: &str,
+    ) -> Result<String, Box<dyn std::error::Error>> {
+        self.ensure_sudo_valid().await?;
+
+        let command = format!("ls \"{}\"", sysfs_path);
+
+        let output = Command::new("sudo")
+            .arg("-n") // non-interactive
+            .arg("sh")
+            .arg("-c")
+            .arg(&command)
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .output()
+            .await?;
+
+        if !output.status.success() {
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            return Err(format!("Command failed: {}", stderr).into());
+        }
+
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        Ok(stdout.trim().to_string())
+    }
+
     pub async fn set_value(
         &self,
 
