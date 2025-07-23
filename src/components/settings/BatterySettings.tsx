@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Battery, Save } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { invoke } from "@tauri-apps/api/core";
 
 interface SettingsSectionProps {
   title: string;
@@ -41,16 +42,16 @@ export function BatterySettings() {
 
   useEffect(() => {
     if (!hasLoadedRef.current) {
-      hasLoadedRef.current = true;
       loadThreshold();
+      hasLoadedRef.current = true;
     }
-  }, []);
+  }, [threshold]);
 
   const loadThreshold = async () => {
     try {
       setIsLoading(true);
-      const currentThreshold = await window.ipcRenderer.invoke(
-        "batteryThresholdManager:getThreshold"
+      const currentThreshold = JSON.parse(
+        (await invoke("get_threshold")) as string,
       );
       setThreshold([currentThreshold]);
     } catch (error) {
@@ -74,10 +75,7 @@ export function BatterySettings() {
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      await window.ipcRenderer.invoke(
-        "batteryThresholdManager:setThreshold",
-        threshold[0]
-      );
+      await invoke("set_threshold", { value: threshold[0] });
       console.log("Battery threshold saved successfully!");
     } catch (error) {
       console.error("Error saving battery threshold:", error);
