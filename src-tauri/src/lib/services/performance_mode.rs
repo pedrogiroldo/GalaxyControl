@@ -1,8 +1,8 @@
-use crate::services::system_manager::SystemManager;
+use crate::{
+    services::system_manager::SystemManager, PERFORMANCE_MODE_CHOICES_SYSFS_PATH,
+    PERFORMANCE_MODE_SYSFS_PATH,
+};
 use serde::Serialize;
-
-const PERFORMANCE_MODE_SYSFS_PATH: &str = "/sys/firmware/acpi/platform_profile";
-const PERFORMANCE_MODE_CHOICES_SYSFS_PATH: &str = "/sys/firmware/acpi/platform_profile_choices";
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
