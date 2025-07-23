@@ -10,31 +10,61 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Battery, Zap } from "lucide-react";
+import { Battery, Zap, Power, Usb, VideoOff } from "lucide-react";
+import { SupportedSettings, MenuItem } from "@/types/settings";
 
 interface AppSidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
+  supportedSettings: SupportedSettings;
 }
 
 export function AppSidebar({
   activeSection,
   onSectionChange,
+  supportedSettings,
 }: AppSidebarProps) {
-  const menuItems = [
+  const allMenuItems: MenuItem[] = [
     {
       id: "battery",
       label: "Battery threshold",
       icon: Battery,
       description: "Battery threshold settings",
+      settingKey: "battery_threshold",
     },
     {
       id: "performance",
       label: "Performance mode",
       icon: Zap,
       description: "Performance mode settings",
+      settingKey: "performance_mode",
+    },
+    {
+      id: "power_on_lid",
+      label: "Power on lid",
+      icon: Power,
+      description: "Power on lid settings",
+      settingKey: "power_on_lid_open",
+    },
+    {
+      id: "usb_charging",
+      label: "USB charging",
+      icon: Usb,
+      description: "USB charging settings",
+      settingKey: "usb_charging",
+    },
+    {
+      id: "block_recording",
+      label: "Block recording",
+      icon: VideoOff,
+      description: "Block recording settings",
+      settingKey: "block_recording",
     },
   ];
+
+  const menuItems = allMenuItems.filter(
+    (item) => supportedSettings[item.settingKey],
+  );
 
   return (
     <Sidebar>

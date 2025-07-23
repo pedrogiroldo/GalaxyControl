@@ -1,10 +1,11 @@
 use crate::{
     services::system_manager::SystemManager, BATTERY_SYSFS_PATH, BLOCK_RECORDING_DIRECTORY_PATH,
-    PERFORMANCE_MODE_CHOICES_SYSFS_PATH, POWER_ON_LID_DIRECTORY_PATH, USB_CHARGING_DIRECTORY_PATH,
+    PERFORMANCE_MODE_CHOICES_SYSFS_PATH, POWER_ON_LID_OPEN_DIRECTORY_PATH,
+    USB_CHARGING_DIRECTORY_PATH,
 };
 
 #[tauri::command]
-pub async fn get_supported_settings() -> Result<String, Box<dyn std::error::Error>> {
+pub async fn get_supported_settings() -> Result<String, String> {
     let sysfs = SystemManager::get_sysfs_manager()
         .map_err(|e| format!("Failed to get sysfs manager: {}", e))?;
 
@@ -13,8 +14,8 @@ pub async fn get_supported_settings() -> Result<String, Box<dyn std::error::Erro
         .get_value(PERFORMANCE_MODE_CHOICES_SYSFS_PATH)
         .await
         .is_ok();
-    let power_on_lid = sysfs
-        .ls_directory(POWER_ON_LID_DIRECTORY_PATH)
+    let power_on_lid_open = sysfs
+        .ls_directory(POWER_ON_LID_OPEN_DIRECTORY_PATH)
         .await
         .is_ok();
     let usb_charging = sysfs
@@ -29,7 +30,7 @@ pub async fn get_supported_settings() -> Result<String, Box<dyn std::error::Erro
     let supported_settings = vec![
         ("battery_threshold", battery_threshold),
         ("performance_mode", performance_mode),
-        ("power_on_lid", power_on_lid),
+        ("power_on_lid_open", power_on_lid_open),
         ("usb_charging", usb_charging),
         ("block_recording", block_recording),
     ];
