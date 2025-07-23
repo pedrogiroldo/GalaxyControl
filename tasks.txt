@@ -1,0 +1,4 @@
+[] Implement Firmware Attributes
+[] Implement Keyboard backlight control
+[] Implement setting supported settings detector
+[] Change the rust backesnd to be more readable (SystemManager service is too confusing)
