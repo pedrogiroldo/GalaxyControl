@@ -98,7 +98,7 @@ export function AppSidebar({
       </SidebarContent>
       <SidebarFooter>
         <div className="p-4 text-xs text-muted-foreground">
-          <p>Version 0.1.0</p>
+          <p>Version 0.2.0</p>
           <p>© 2025 Galaxy Control</p>
         </div>
       </SidebarFooter>
