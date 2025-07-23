@@ -8,11 +8,9 @@ import { invoke } from "@tauri-apps/api/core";
 function App() {
   const [activeSection, setActiveSection] = useState("battery");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [sudoPassword, setSudoPassword] = useState<string>("");
 
   const handlePasswordSubmit = async (password: string) => {
     try {
-      setSudoPassword(password);
       setIsAuthenticated(true);
       await invoke("authenticate", { password });
       console.log("Autenticação bem-sucedida");
