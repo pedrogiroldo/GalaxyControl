@@ -115,7 +115,7 @@ export function BatterySettings() {
               />
             </div>
             <p className="text-xs text-muted-foreground">
-              Alert when battery reaches {threshold[0]}%
+              Stop charging when battery reaches {threshold[0]}%
             </p>
           </div>
         </div>

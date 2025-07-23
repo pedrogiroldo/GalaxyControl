@@ -1,6 +1,4 @@
-use crate::services::system_manager::SystemManager;
-
-const BATTERY_SYSFS_PATH: &str = "/sys/class/power_supply/BAT1/charge_control_end_threshold";
+use crate::{services::system_manager::SystemManager, BATTERY_SYSFS_PATH};
 
 #[tauri::command]
 pub async fn get_threshold() -> Result<String, String> {
