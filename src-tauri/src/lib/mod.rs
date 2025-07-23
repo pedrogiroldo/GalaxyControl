@@ -2,6 +2,7 @@ pub mod models;
 pub mod services;
 
 use crate::services::battery_thereshold_controller;
+use crate::services::firmware_attributes;
 use crate::services::performance_mode;
 use crate::services::supported_settings_detector;
 use crate::services::system_manager;
@@ -36,6 +37,12 @@ pub fn run() {
             performance_mode::get_possible_performance_modes,
             performance_mode::get_performance_data,
             supported_settings_detector::get_supported_settings,
+            firmware_attributes::get_power_on_lid_open,
+            firmware_attributes::set_power_on_lid_open,
+            firmware_attributes::get_usb_charging,
+            firmware_attributes::set_usb_charging,
+            firmware_attributes::get_block_recording,
+            firmware_attributes::set_block_recording,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
