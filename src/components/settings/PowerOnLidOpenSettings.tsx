@@ -47,7 +47,7 @@ export function PowerOnLidOpenSettings() {
       setIsLoading(true);
       setError(null);
       // This would need to be implemented in the Rust backend
-      const result = await invoke<boolean>("get_power_on_lid_setting");
+      const result = await invoke<boolean>("get_power_on_lid_open");
       setIsEnabled(result);
     } catch (error) {
       console.error("Erro ao carregar configuração de power on lid:", error);
@@ -66,7 +66,7 @@ export function PowerOnLidOpenSettings() {
       setIsSaving(true);
       setError(null);
       // This would need to be implemented in the Rust backend
-      await invoke("set_power_on_lid_setting", { enabled: isEnabled });
+      await invoke("set_power_on_lid_open", { enabled: isEnabled });
       console.log("Power on lid setting saved successfully!");
     } catch (error) {
       console.error("Erro ao alterar configuração de power on lid:", error);

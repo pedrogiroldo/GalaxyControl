@@ -102,8 +102,8 @@ function App() {
             supportedSettings.battery_threshold && <BatterySettings />}
           {activeSection === "performance" &&
             supportedSettings.performance_mode && <PerformanceSettings />}
-          {activeSection === "power_on_lid_open" &&
-            supportedSettings.power_on_lid_open && <PowerOnLidSettings />}
+          {activeSection === "power_on_lid" &&
+            supportedSettings.power_on_lid_open && <PowerOnLidOpenSettings />}
           {activeSection === "usb_charging" &&
             supportedSettings.usb_charging && <UsbChargingSettings />}
           {activeSection === "block_recording" &&

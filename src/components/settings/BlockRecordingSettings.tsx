@@ -47,7 +47,7 @@ export function BlockRecordingSettings() {
       setIsLoading(true);
       setError(null);
       // This would need to be implemented in the Rust backend
-      const result = await invoke<boolean>("get_block_recording_setting");
+      const result = await invoke<boolean>("get_block_recording");
       setIsEnabled(result);
     } catch (error) {
       console.error("Erro ao carregar configuração de block recording:", error);
@@ -66,7 +66,7 @@ export function BlockRecordingSettings() {
       setIsSaving(true);
       setError(null);
       // This would need to be implemented in the Rust backend
-      await invoke("set_block_recording_setting", { enabled: isEnabled });
+      await invoke("set_block_recording", { enabled: isEnabled });
       console.log("Block recording setting saved successfully!");
     } catch (error) {
       console.error("Erro ao alterar configuração de block recording:", error);

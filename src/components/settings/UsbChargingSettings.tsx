@@ -47,7 +47,7 @@ export function UsbChargingSettings() {
       setIsLoading(true);
       setError(null);
       // This would need to be implemented in the Rust backend
-      const result = await invoke<boolean>("get_usb_charging_setting");
+      const result = await invoke<boolean>("get_usb_charging");
       setIsEnabled(result);
     } catch (error) {
       console.error("Erro ao carregar configuração de USB charging:", error);
@@ -66,7 +66,7 @@ export function UsbChargingSettings() {
       setIsSaving(true);
       setError(null);
       // This would need to be implemented in the Rust backend
-      await invoke("set_usb_charging_setting", { enabled: isEnabled });
+      await invoke("set_usb_charging", { enabled: isEnabled });
       console.log("USB charging setting saved successfully!");
     } catch (error) {
       console.error("Erro ao alterar configuração de USB charging:", error);
