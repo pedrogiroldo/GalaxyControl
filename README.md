@@ -16,7 +16,7 @@ Galaxy Control provides a simple and intuitive way to adjust your Samsung Galaxy
 
 ## ⚙️ How It Works
 
-The application modifies values in the `sysfs` files located at `/sys/devices/platform/samsung-laptop/`. Since modifying these files requires superuser privileges, Galaxy Control will ask for your `sudo` password on startup to apply changes securely.
+The application modifies values in the `sysfs` files. Since modifying these files requires superuser privileges, Galaxy Control will ask for your `sudo` password on startup to apply changes securely.
 
 ## 📦 Installation
 
