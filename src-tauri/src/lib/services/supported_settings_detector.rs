@@ -3,6 +3,7 @@ use crate::{
     PERFORMANCE_MODE_CHOICES_SYSFS_PATH, POWER_ON_LID_DIRECTORY_PATH, USB_CHARGING_DIRECTORY_PATH,
 };
 
+#[tauri::command]
 pub async fn get_supported_settings() -> Result<String, Box<dyn std::error::Error>> {
     let sysfs = SystemManager::get_sysfs_manager()
         .map_err(|e| format!("Failed to get sysfs manager: {}", e))?;
