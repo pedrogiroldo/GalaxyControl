@@ -11,10 +11,17 @@ pub const PERFORMANCE_MODE_SYSFS_PATH: &str = "/sys/firmware/acpi/platform_profi
 pub const PERFORMANCE_MODE_CHOICES_SYSFS_PATH: &str = "/sys/firmware/acpi/platform_profile_choices";
 pub const POWER_ON_LID_OPEN_DIRECTORY_PATH: &str =
     "/sys/class/firmware-attributes/samsung-galaxybook/attributes/power_on_lid_open";
+pub const POWER_ON_LID_OPEN_SYSFS_PATH: &str =
+    "/sys/class/firmware-attributes/samsung-galaxybook/attributes/power_on_lid_open/current_value";
 pub const USB_CHARGING_DIRECTORY_PATH: &str =
     "/sys/class/firmware-attributes/samsung-galaxybook/attributes/usb_charging";
+pub const USB_CHARGING_SYSFS_PATH: &str =
+    "/sys/class/firmware-attributes/samsung-galaxybook/attributes/usb_charging/current_value";
+
 pub const BLOCK_RECORDING_DIRECTORY_PATH: &str =
     "/sys/class/firmware-attributes/samsung-galaxybook/attributes/block_recording";
+pub const BLOCK_RECORDING_SYSFS_PATH: &str =
+    "/sys/class/firmware-attributes/samsung-galaxybook/attributes/block_recording/current_value";
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
