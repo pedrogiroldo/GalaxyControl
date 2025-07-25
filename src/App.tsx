@@ -11,6 +11,7 @@ import {
 import { SudoPasswordDialog } from "./components/sudo-password-dialog";
 import { invoke } from "@tauri-apps/api/core";
 import { SupportedSettings } from "./types/settings";
+import { createTrayIcon } from "./lib/trayMenu";
 
 function App() {
   const [activeSection, setActiveSection] = useState("");
@@ -25,6 +26,7 @@ function App() {
       console.log("Autenticação bem-sucedida");
       setIsAuthenticated(true);
       setTimeout(() => {}, 3000);
+      await createTrayIcon();
       await loadSupportedSettings();
     } catch (error) {
       console.error("Erro na autenticação:", error);
